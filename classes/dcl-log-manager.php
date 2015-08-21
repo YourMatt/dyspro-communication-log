@@ -17,6 +17,12 @@ class dcl_log_manager {
 
    }
 
+   public function get_num_log_entries_for_current_date ($category) {
+
+      return 0;
+
+   }
+
    public function get_log_entry ($log_id) {
 
       return array ();
