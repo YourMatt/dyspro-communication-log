@@ -10,9 +10,32 @@ class dcl_log_manager {
       $this->db = &$wpdb;
    }
 
-   public function get_log_entries () {
+   public function get_log_entries ($category, $date) {
 
-      return array ();
+      // set the gmt date range
+      $date_seconds = strtotime (str_replace ('-', '/', $date)); // strtotime doesn't like dashes, so convert to slashes
+      $date_seconds -= 60 * 60 * get_option ('gmt_offset');
+
+      $date_start = date ('Y-m-d H:i:s', $date_seconds);
+      $date_end = date ('Y-m-d H:i:s', $date_seconds + 60 * 60 * 24);
+
+      // load the data from the database
+      $sql = $this->db->prepare ('
+         SELECT   id
+         ,        category
+         ,        author
+         ,        log_entry
+         ,        date_updated
+         , (      SELECT meta_value FROM wp_usermeta WHERE user_id = author AND meta_key = \'first_name\') AS author_first_name
+         , (      SELECT meta_value FROM wp_usermeta WHERE user_id = author AND meta_key = \'last_name\') AS author_last_name
+         FROM     ' . DCL_TABLE_LOG . '
+         WHERE    category = %s
+         AND      date_updated BETWEEN %s AND %s',
+         $category,
+         $date_start,
+         $date_end);
+
+      return $this->db->get_results ($sql);
 
    }
 
