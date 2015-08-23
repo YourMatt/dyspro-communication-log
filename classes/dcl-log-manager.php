@@ -2,7 +2,6 @@
 
 class dcl_log_manager {
 
-   public $updated_document_title;
    public $error_message;
    private $db;
 
@@ -29,7 +28,21 @@ class dcl_log_manager {
 
    }
 
-   public function add_log_entry () {
+   public function add_log_entry ($log_entry, $category, $author) {
+
+      // validate required fields
+      if (!$log_entry || !$category || !$author) {
+         $this->error_message = 'Missing required fields. Please try again.';
+         return false;
+      }
+
+      // insert the new record
+      if (! $this->db->insert (DCL_TABLE_LOG, array (
+         'log_entry' => $log_entry,
+         'category' => $category,
+         'author' => $author,
+         'date_updated' => current_time ('mysql', 1)
+      ))) return false;
 
       return true;
 
