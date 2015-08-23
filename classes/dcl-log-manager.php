@@ -79,6 +79,9 @@ class dcl_log_manager {
 
    public function delete_log_entry ($log_id) {
 
+      // delete the record from the database
+      if (! $this->db->delete (DCL_TABLE_LOG, array ('id' => $log_id), array ('%d'))) return false;
+
       return true;
 
    }

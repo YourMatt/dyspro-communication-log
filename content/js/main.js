@@ -26,6 +26,36 @@ var dclMain = {
          }
       });
 
+      this.setFormButtonHandlers ();
+
+   },
+
+   setFormButtonHandlers: function () {
+
+      // set delete log entry handler
+      $('.dcl-delete-log-entry').click (function () {
+         var row = $(this).parent().parent();
+         var logId = row.attr ('log');
+
+         $.fancybox (
+            '<h2>Delete Log Entry</h2>' + $('#dcl-form-delete').html (),
+            {
+               autoSize: false,
+               width: 350,
+               height: 'auto'
+            }
+         );
+
+         var container = $ ('.fancybox-wrap');
+         $ ('input[name=log_id]', container).val (logId);
+         $ ('.form-cancel', container).click (dclMain.closeModalHandler);
+      });
+
+   },
+
+   closeModalHandler: function() {
+      $.fancybox.close();
+      return false;
    },
 
    getParameterByName: function (name) {

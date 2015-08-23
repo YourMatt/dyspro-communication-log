@@ -158,7 +158,27 @@ class dcl_shortcode_manager {
 </tbody>
 </table>';
 
+      $html .= $this->get_delete_form ();
+
       return $html;
+
+   }
+
+   private function get_delete_form () {
+
+      return '
+<div id="dcl-form-delete" style="display: none;">
+   <form class="dcl-form" method="post">
+      <input type="hidden" name="action" value="delete"/>
+      <input type="hidden" name="log_id" value=""/>
+      ' . wp_nonce_field('dcl_delete', DCL_MANAGEMENT_NONCE, false, false) . '
+      <p>Are you sure you want to delete this log entry?  This will be permanently deleted from the system.</p>
+      <p class="center">
+         <button class="form-submit">Delete</button>
+         <button class="form-cancel">Cancel</button>
+      </p>
+   </form>
+</div>';
 
    }
 
