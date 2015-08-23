@@ -41,7 +41,24 @@ class dcl_log_manager {
 
    public function get_num_log_entries_for_current_date ($category) {
 
-      return 0;
+      // set the gmt date range
+      $date_seconds = time () + 60 * 60 * get_option ('gmt_offset');
+
+      $date_start = date ('Y-m-d H:i:s', $date_seconds);
+      $date_end = date ('Y-m-d H:i:s', $date_seconds + 60 * 60 * 24);
+
+      // load the data from the database
+      $sql = $this->db->prepare ('
+         SELECT   count(id) as num_entries
+         FROM     ' . DCL_TABLE_LOG . '
+         WHERE    category = %s
+         AND      date_updated BETWEEN %s AND %s',
+         $category,
+         $date_start,
+         $date_end);
+
+      $results = $this->db->get_results ($sql);
+      return $results[0]->num_entries;
 
    }
 
