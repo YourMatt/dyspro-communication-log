@@ -123,6 +123,7 @@ class dcl_shortcode_manager {
    {
 
       $html = '
+<div class="dcl-table-wrapper">
 <table id="dcl-table" class="display" cellspacing="0" width="100%">
 <thead>
    <tr>
@@ -157,7 +158,8 @@ class dcl_shortcode_manager {
 
       $html .= '
 </tbody>
-</table>';
+</table>
+</div>';
 
       $html .= $this->get_edit_form ($category);
       $html .= $this->get_delete_form ();
