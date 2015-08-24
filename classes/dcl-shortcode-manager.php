@@ -95,7 +95,7 @@ class dcl_shortcode_manager {
       }
 
       // build the log table if entries found
-      else $html .= $this->get_log_table ($log_entries);
+      else $html .= $this->get_log_table ($log_entries, $category);
 
       // add the add log field if showing current date
       if ($date == $current_date) {
@@ -118,7 +118,7 @@ class dcl_shortcode_manager {
 
    }
 
-   private function get_log_table ($log_entries)
+   private function get_log_table ($log_entries, $category)
    {
 
       $html = '
@@ -158,9 +158,31 @@ class dcl_shortcode_manager {
 </tbody>
 </table>';
 
+      $html .= $this->get_edit_form ($category);
       $html .= $this->get_delete_form ();
 
       return $html;
+
+   }
+
+   private function get_edit_form ($category)
+   {
+
+      return '
+<div id="dcl-form-edit" style="display: none;">
+   <form class="dcl-form" method="post">
+      <input type="hidden" name="action" value="edit"/>
+      <input type="hidden" name="log_id" value=""/>
+      <input type="hidden" name="cat" value="' . $category . '"/>
+      ' . wp_nonce_field('dcl_edit', DCL_MANAGEMENT_NONCE, false, false) . '
+      <div class="error-message"></div>
+      <textarea name="log_entry"></textarea>
+      <p class="center">
+         <button class="form-submit">Save</button>
+         <button class="form-cancel">Cancel</button>
+      </p>
+   </form>
+</div>';
 
    }
 

@@ -62,12 +62,6 @@ class dcl_log_manager {
 
    }
 
-   public function get_log_entry ($log_id) {
-
-      return array ();
-
-   }
-
    public function add_log_entry ($log_entry, $category, $author) {
 
       // validate required fields
@@ -88,8 +82,29 @@ class dcl_log_manager {
 
    }
 
-   public function update_log_entry ($log_id) {
+   public function update_log_entry ($log_id, $log_entry, $category, $author, $update_date = false) {
 
+      // validate required fields
+      if (!$log_id || !$log_entry || !$category || !$author) {
+         $this->error_message = 'Missing required fields. Please try again.';
+         return false;
+      }
+
+      // update the record
+      $update_fields = array (
+         'log_entry' => $log_entry,
+         'category' => $category,
+         'author' => $author
+      );
+      if ($update_date) $update_fields['date_updated'] = current_time ('mysql', 1);
+
+      if (! $this->db->update (DCL_TABLE_LOG,
+         $update_fields,
+         array (
+            'id' => $log_id)
+      )) return false;
+
+      // return
       return true;
 
    }
