@@ -101,6 +101,7 @@ class dcl_shortcode_manager {
       if ($date == $current_date) {
          $html .= '
    <form id="dcl-form-add" method="post">
+      <p>New log entry</p>
       <input type="hidden" name="action" value="add"/>
       <input type="hidden" name="cat" value="' . $category . '"/>
       ' . wp_nonce_field('dcl_add', DCL_MANAGEMENT_NONCE, false, false) . '
